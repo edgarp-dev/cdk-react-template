@@ -17,14 +17,14 @@ export class MainStack extends cdk.Stack {
     const sourceOutput = new codepipeline.Artifact();
     const buildOutput = new codepipeline.Artifact();
 
-    // const githubToken = ssm.StringParameter.valueFromLookup(this, '/github/token');
+    const githubConnectionArn = ssm.StringParameter.valueFromLookup(this, '/edgarpdev/github/codestar-connection');
 
-    const sourceAction = new codepipeline_actions.GitHubSourceAction({
+    const sourceAction = new codepipeline_actions.CodeStarConnectionsSourceAction({
       actionName: 'GitHub_Source',
       owner: 'edgarp-dev',
       repo: 'cdk-react-template',
       branch: 'main',
-      oauthToken: cdk.SecretValue.unsafePlainText(''),
+      connectionArn: githubConnectionArn,
       output: sourceOutput,
     });
 
